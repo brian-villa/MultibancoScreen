@@ -32,6 +32,10 @@ public class ContaBancaria {
         return saldo;
     }
 
+    public String getTitular() {
+        return titular;
+    }
+
     //Metodo principal para criar a interface
     public static void main(String[] args) {
         JFrame frame = new JFrame("ContaBancaria");

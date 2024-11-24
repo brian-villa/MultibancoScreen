@@ -16,6 +16,7 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         setSize(800, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+        setLocationRelativeTo(null);
 
         getContentPane().setBackground(Color.white);
         setLocation(350, 200);
@@ -26,6 +27,12 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         text.setBounds(235,30, 350, 35);
         text.setFont(new Font("System", Font.BOLD, 20));
         add(text);
+
+        //MENSAGEM PARA USUARIO
+        JLabel lblBemVindo = new JLabel("Bem-vindo, " + conta.getTitular() + "!");
+        lblBemVindo.setFont(new Font("Tahoma", Font.BOLD, 24));
+        add(lblBemVindo);
+
 
         //Botao Depositar
         btnDepositar = new JButton("Depositar");
@@ -51,24 +58,16 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         btnSair.addActionListener(this);
         add(btnSair);
 
-        //componentes SALDO
-        JLabel lblSaldo = new JLabel("Saldo: ");
-        lblSaldo.setFont(new Font("Tahoma", Font.PLAIN, 22));
-        lblSaldo.setBounds(130 ,100 , 90, 20);
-        add(lblSaldo);
-
-        txtSaldo = new JTextField(20);
-        txtSaldo.setBounds(50, 100, 150, 30);
-        txtSaldo.setFont(new Font("Tahoma", Font.PLAIN, 22));
-        txtSaldo.setEditable(false);
-        add(txtSaldo);
 
         setVisible(true);
     }
 
     private void atualizarSaldo() {
-        txtSaldo.setText(String.format("€ %.2f", conta.getSaldo()));
+        if (txtSaldo != null) {
+            txtSaldo.setText(String.format("€ %.2f", conta.getSaldo()));
+        }
     }
+
 
     public static void main(String[] args) {
         ContaBancaria conta = new ContaBancaria(1245, "Joao", 100);
@@ -80,12 +79,16 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSair) {
             System.exit(0);
+
         } else if(e.getSource() == btnSaldo) {
+            new TelaSaldo(conta).setVisible(true);
             atualizarSaldo();
+
         } else if(e.getSource() == btnDepositar) {
             double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a depositar:"));
             conta.depositar(valor);
             atualizarSaldo();
+
         } else if (e.getSource() == btnSacar) {
             double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a ser sacado:"));
             conta.sacar(valor);

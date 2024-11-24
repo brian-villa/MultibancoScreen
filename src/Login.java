@@ -10,6 +10,7 @@ public class Login extends JFrame implements ActionListener {
         setTitle("ATM Multibanco");
 
         setLayout(null);
+        setLocationRelativeTo(null);
 
         //Imagem da aplicação
         ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("icon/logo.png"));
@@ -28,7 +29,6 @@ public class Login extends JFrame implements ActionListener {
 
         // PIN de validação
         JLabel pin = new JLabel("SENHA:");
-        pin.setFont(new Font("Raleway", Font.BOLD, 28));
         pin.setBounds(200, 150, 400, 40);
         add(pin);
 
@@ -71,7 +71,7 @@ public class Login extends JFrame implements ActionListener {
             try {
                 if (pinTextField.getText().equals("1234")) {
                     ContaBancaria conta = new ContaBancaria(12345, "Joao da Silva", 1000);
-                    new TelaCaixaEletronico(conta).setVisible(true);
+                    new TelaCaixaEletronico(conta);
                 } else {
                     JOptionPane.showMessageDialog(null, "Senha incorreta!");
                 }
