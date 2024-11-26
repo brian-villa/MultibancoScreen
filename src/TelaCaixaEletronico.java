@@ -24,12 +24,13 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
 
         //Tela principal
         JLabel text = new JLabel("Selecione a sua Transação:", JLabel.CENTER);
-        text.setBounds(235,30, 350, 35);
+        text.setBounds(235,230, 350, 35);
         text.setFont(new Font("System", Font.BOLD, 20));
         add(text);
 
         //MENSAGEM PARA USUARIO
         JLabel lblBemVindo = new JLabel("Bem-vindo, " + conta.getTitular() + "!");
+        lblBemVindo.setBounds(300,30, 350, 35);
         lblBemVindo.setFont(new Font("Tahoma", Font.BOLD, 24));
         add(lblBemVindo);
 
@@ -81,17 +82,18 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
             System.exit(0);
 
         } else if(e.getSource() == btnSaldo) {
+            dispose();
             new TelaSaldo(conta).setVisible(true);
             atualizarSaldo();
 
         } else if(e.getSource() == btnDepositar) {
-            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a depositar:"));
-            conta.depositar(valor);
+            dispose();
+            new TelaDepositar(conta).setVisible(true);
             atualizarSaldo();
 
         } else if (e.getSource() == btnSacar) {
-            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a ser sacado:"));
-            conta.sacar(valor);
+            dispose();
+            new TelaSacar(conta).setVisible(true);
             atualizarSaldo();
         }
     }
