@@ -32,6 +32,7 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         JLabel lblBemVindo = new JLabel("Bem-vindo, " + conta.getTitular() + "!");
         lblBemVindo.setBounds(270,30, 350, 35);
         lblBemVindo.setFont(new Font("Tahoma", Font.BOLD, 24));
+        lblBemVindo.setBounds(240, 150, 400, 40);
         add(lblBemVindo);
 
 
