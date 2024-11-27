@@ -30,7 +30,7 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
 
         //MENSAGEM PARA USUARIO
         JLabel lblBemVindo = new JLabel("Bem-vindo, " + conta.getTitular() + "!");
-        lblBemVindo.setBounds(300,30, 350, 35);
+        lblBemVindo.setBounds(270,30, 350, 35);
         lblBemVindo.setFont(new Font("Tahoma", Font.BOLD, 24));
         add(lblBemVindo);
 
@@ -69,11 +69,6 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         }
     }
 
-
-    public static void main(String[] args) {
-        ContaBancaria conta = new ContaBancaria(1245, "Joao", 100);
-        new TelaCaixaEletronico(conta);
-    }
 
     //Evento dos botões
     @Override

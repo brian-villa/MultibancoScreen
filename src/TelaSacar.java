@@ -70,9 +70,6 @@ public class TelaSacar extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnVoltar){
-            dispose();
-        }
         if(e.getSource() == btnSacar10){
             if (conta.getSaldo() >= 10){
                 conta.sacar(10);

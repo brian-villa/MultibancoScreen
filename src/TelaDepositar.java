@@ -70,10 +70,6 @@ public class TelaDepositar extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnVoltar){
-            dispose();
-
-        }
         if(e.getSource() == btnDepositar10){
             conta.depositar(10);
             JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
