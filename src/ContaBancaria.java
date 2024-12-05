@@ -1,9 +1,12 @@
 import javax.swing.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ContaBancaria {
     private int numeroConta;
     private String titular;
     private double saldo;
+    private ArrayList<Movimentacoes> movimentacoes;
 
 
     //Construtor
@@ -11,19 +14,27 @@ public class ContaBancaria {
         this.numeroConta = numeroConta;
         this.titular = titular;
         this.saldo = saldo;
+        this.movimentacoes = new ArrayList<>();
     }
 
     //Metodos para interagir com a conta
     public void depositar(double valor) {
         saldo += valor;
+        movimentacoes.add(new Movimentacoes(LocalDate.now(), "Depósito", valor));
     }
 
     public void sacar(double valor) {
         if(saldo >= valor) {
             saldo -= valor;
+            movimentacoes.add(new Movimentacoes(LocalDate.now(), "Saque", -valor));
         } else {
             System.out.println("Saldo insuficiente");
+
         }
+    }
+
+    public ArrayList<Movimentacoes> getMovimentacoes() {
+        return movimentacoes;
     }
 
     public double getSaldo() {

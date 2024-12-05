@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class TelaCaixaEletronico extends JFrame implements ActionListener {
     ContaBancaria conta;
     JTextField txtSaldo;
-    JButton btnDepositar, btnSacar, btnSaldo, btnSair;
+    JButton btnDepositar, btnSacar, btnSaldo, btnSair, btnExtrato;
 
     public TelaCaixaEletronico(ContaBancaria conta) {
         this.conta = conta;
@@ -54,6 +54,12 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         btnSaldo.addActionListener(this);
         add(btnSaldo);
 
+        //Botao Extrato
+        btnExtrato = new JButton("Gerar Extrato");
+        btnExtrato.setBounds(170, 400, 150,30);
+        btnExtrato.addActionListener(this);
+        add(btnExtrato);
+
         //Botao SAIR
         btnSair = new JButton("Sair");
         btnSair.setBounds(485, 375, 150,30);
@@ -85,12 +91,21 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         } else if(e.getSource() == btnDepositar) {
             dispose();
             new TelaDepositar(conta).setVisible(true);
-            atualizarSaldo();
+
 
         } else if (e.getSource() == btnSacar) {
             dispose();
             new TelaSacar(conta).setVisible(true);
             atualizarSaldo();
+        } else if (e.getSource() == btnExtrato) {
+            // Gera o relatório de extrato
+            try {
+                RelatorioBancario.gerarRelatorio(conta.getMovimentacoes(), conta.getSaldo());
+                JOptionPane.showMessageDialog(this, "Relatório gerado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao gerar o relatório!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }
+

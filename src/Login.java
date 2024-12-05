@@ -71,7 +71,7 @@ public class Login extends JFrame implements ActionListener {
             try {
                 if (pinTextField.getText().equals("1234")) {
                     ContaBancaria conta = new ContaBancaria(12345, "Joao da Silva", 1000);
-                    new TelaCaixaEletronico(conta);
+                    new TelaCaixaEletronico(conta); 
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Senha incorreta!");
