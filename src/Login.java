@@ -11,6 +11,8 @@ public class Login extends JFrame implements ActionListener {
 
         setLayout(null);
         setLocationRelativeTo(null);
+        setResizable(false);  // Impede redimensionamento
+        setExtendedState(JFrame.NORMAL);  // Impede a maximização
 
         //Imagem da aplicação
         ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("icon/logo.png"));

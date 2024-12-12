@@ -14,27 +14,34 @@ public class TelaSaldo extends JFrame implements ActionListener {
         setTitle("Saldo Multibanco");
         setSize(800, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
+        setLayout(new BorderLayout());
         setLocationRelativeTo(null); // Centraliza a janela na tela
         getContentPane().setBackground(Color.white);
 
         // Label para o título
-        JLabel lblSaldoTitulo = new JLabel("Saldo Atual:");
+        JLabel lblSaldoTitulo = new JLabel("Saldo Atual:", JLabel.CENTER);
         lblSaldoTitulo.setFont(new Font("Tahoma", Font.BOLD, 38));
-        lblSaldoTitulo.setBounds(300, 40, 400, 40);
-        add(lblSaldoTitulo);
+        add(lblSaldoTitulo, BorderLayout.NORTH);
+
+        // Painel central para o saldo
+        JPanel painelCentral = new JPanel();
+        painelCentral.setLayout(new GridLayout(2, 1, 20, 20)); // 2 linhas, 1 coluna, espaçamento de 20px
+        painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100)); // Margens
+        painelCentral.setBackground(Color.white);
 
         // Label para mostrar o saldo
-        JLabel lblSaldoValor = new JLabel("€ " + String.format("%.2f", conta.getSaldo()));
+        JLabel lblSaldoValor = new JLabel("€ " + String.format("%.2f", conta.getSaldo()), JLabel.CENTER);
         lblSaldoValor.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        lblSaldoValor.setBounds(320, 150, 400, 40);
-        add(lblSaldoValor);
+        painelCentral.add(lblSaldoValor);
 
         // Botão Voltar
         btnVoltar = new JButton("Voltar");
-        btnVoltar.setBounds(325, 300, 150, 30);
+        btnVoltar.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnVoltar.addActionListener(this);
-        add(btnVoltar);
+        painelCentral.add(btnVoltar);
+
+        // Adiciona o painel central ao centro da janela
+        add(painelCentral, BorderLayout.CENTER);
 
         setVisible(true);
     }

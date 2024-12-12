@@ -5,95 +5,87 @@ import java.awt.event.ActionListener;
 
 public class TelaDepositar extends JFrame implements ActionListener {
     private ContaBancaria conta;
-    private JButton btnDepositar10, btnDepositar20, btnDepositar50, btnDepositar100,btnDepOutras, btnVoltar;
+    private JButton btnDepositar10, btnDepositar20, btnDepositar50, btnDepositar100, btnDepOutras, btnVoltar;
 
-    public TelaDepositar(ContaBancaria conta){
+    public TelaDepositar(ContaBancaria conta) {
         this.conta = conta;
 
         // Configuração da janela
         setTitle("Depositar Multibanco");
         setSize(800, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
+        setLayout(new BorderLayout());
         setLocationRelativeTo(null); // Centraliza a janela na tela
         getContentPane().setBackground(Color.white);
 
         // Label para o título
-        JLabel lblTitulo = new JLabel("Escolha o valor do Deposito:");
+        JLabel lblTitulo = new JLabel("Escolha o valor do Depósito:", JLabel.CENTER);
         lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 30));
-        lblTitulo.setBounds(200, 40, 400, 40);
-        add(lblTitulo);
+        add(lblTitulo, BorderLayout.NORTH);
 
-        // Botão para sacar €10
+        // Painel central com os botões
+        JPanel painelCentral = new JPanel();
+        painelCentral.setLayout(new GridLayout(3, 2, 20, 20)); // 3 linhas, 2 colunas, espaçamento de 20px
+        painelCentral.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100)); // Margens
+
+        // Botões
         btnDepositar10 = new JButton("€ 10");
-        btnDepositar10.setBounds(200, 150, 120, 50);
         btnDepositar10.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnDepositar10.addActionListener(this);
-        add(btnDepositar10);
+        painelCentral.add(btnDepositar10);
 
-        // Botão para sacar €20
         btnDepositar20 = new JButton("€ 20");
-        btnDepositar20.setBounds(320, 150, 120, 50);
         btnDepositar20.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnDepositar20.addActionListener(this);
-        add(btnDepositar20);
+        painelCentral.add(btnDepositar20);
 
-        // Botão para sacar €50
         btnDepositar50 = new JButton("€ 50");
-        btnDepositar50.setBounds(200, 200, 120, 50);
         btnDepositar50.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnDepositar50.addActionListener(this);
-        add(btnDepositar50);
+        painelCentral.add(btnDepositar50);
 
-        // Botão para sacar €100
         btnDepositar100 = new JButton("€ 100");
-        btnDepositar100.setBounds(320, 200, 120, 50);
         btnDepositar100.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnDepositar100.addActionListener(this);
-        add(btnDepositar100);
-
-        // botao para outras importancias
+        painelCentral.add(btnDepositar100);
 
         btnDepOutras = new JButton("Outros valores");
-        btnDepOutras.setBounds(440, 150, 120, 50);
         btnDepOutras.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnDepOutras.addActionListener(this);
-        add(btnDepOutras);
+        painelCentral.add(btnDepOutras);
 
         btnVoltar = new JButton("Voltar");
-        btnVoltar.setBounds(440, 200, 120, 50);
         btnVoltar.setFont(new Font("Tahoma", Font.BOLD, 18));
         btnVoltar.addActionListener(this);
-        add(btnVoltar);
+        painelCentral.add(btnVoltar);
+
+        add(painelCentral, BorderLayout.CENTER);
 
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnDepositar10){
-            conta.depositar(10);
-            JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
-        }
-        if(e.getSource() == btnDepositar20){
-            conta.depositar(20);
-            JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
-        }
-        if(e.getSource() == btnDepositar50){
-            conta.depositar(50);
-            JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
-        }
-        if(e.getSource() == btnDepositar100){
-            conta.depositar(100);
-            JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
-        }
-        if (e.getSource() == btnDepOutras){
-            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a depositar:"));
-            conta.depositar(valor);
-            JOptionPane.showMessageDialog(null, "Deposito Realizado com sucesso!");
-        }
-        if (e.getSource() == btnVoltar){
+        if (e.getSource() == btnDepositar10) {
+            realizarDeposito(10);
+        } else if (e.getSource() == btnDepositar20) {
+            realizarDeposito(20);
+        } else if (e.getSource() == btnDepositar50) {
+            realizarDeposito(50);
+        } else if (e.getSource() == btnDepositar100) {
+            realizarDeposito(100);
+        } else if (e.getSource() == btnDepOutras) {
+            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a Depositar:"));
+            realizarDeposito(valor);
+        } else if (e.getSource() == btnVoltar) {
             dispose();
             new TelaCaixaEletronico(conta);
         }
     }
+
+    private void realizarDeposito(double valor) {
+      conta.depositar(valor);
+        JOptionPane.showMessageDialog(this, "Depósito de € " + valor + " realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
+
