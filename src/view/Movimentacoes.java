@@ -1,15 +1,26 @@
+package view;
+
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Movimentacoes {
+    private UUID uuid;
     private LocalDate data;
     private String tipoOperacao;
     private double valor;
 
-    public Movimentacoes(LocalDate data, String tipoOperacao, double valor) {
+    public Movimentacoes(UUID uuid, LocalDate data, String tipoOperacao, double valor) {
+        this.uuid = uuid;
         this.data = data;
         this.tipoOperacao = tipoOperacao;
         this.valor = valor;
     }
+
+    //setters
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
+    }
+
 
     //getters
     public LocalDate getData() {
@@ -23,6 +34,8 @@ public class Movimentacoes {
     public double getValor() {
         return valor;
     }
+
+    public UUID getUuid() { return uuid; }
 
     @Override
     public String toString() {

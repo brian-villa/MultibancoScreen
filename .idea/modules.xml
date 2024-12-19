@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TelaCaixaEletronico.iml" filepath="$PROJECT_DIR$/TelaCaixaEletronico.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multibanco.iml" filepath="$PROJECT_DIR$/multibanco.iml" />
     </modules>
   </component>
 </project>

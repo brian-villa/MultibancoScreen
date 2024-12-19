@@ -1,8 +1,13 @@
+package view;
+
+import model.ContaBancaria;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class Login extends JFrame implements ActionListener {
+    ContaBancaria conta;
     JButton login, clear;
     JTextField pinTextField;
 
@@ -71,8 +76,9 @@ public class Login extends JFrame implements ActionListener {
         } else if(e.getSource() == login) {
             //Verificaçao de senha
             try {
-                if (pinTextField.getText().equals("1234")) {
-                    ContaBancaria conta = new ContaBancaria(12345, "Joao da Silva", 1000);
+                String senhaInput = pinTextField.getText();
+
+                if (conta.autenticar(senhaInput)) {
                     new TelaCaixaEletronico(conta); 
                     dispose();
                 } else {

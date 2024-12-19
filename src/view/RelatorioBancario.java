@@ -1,19 +1,45 @@
+package view;
+
+import dao.MovimentacoesDAO;
+import util.ConexaoBancoDados;
+
+import javax.sql.DataSource;
 import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
 public class RelatorioBancario {
 
     public static void main(String[] args) {
-        // Exemplo de lista de movimentações
-        ArrayList<Movimentacoes> movimentacoes = new ArrayList<>();
+        MovimentacoesDAO movimentacoesDAO = new MovimentacoesDAO();
 
-        // Chamando o método para gerar relatório
-        double saldoAtual = 150.00; // Exemplo de saldo
-        gerarRelatorio(movimentacoes, saldoAtual);
+        try {
+            List<Movimentacoes> movimentacoes = movimentacoesDAO.listarMovimentacoes();
+
+            double saldoAtual = calcularSaldoAtual(movimentacoes);
+
+            gerarRelatorio(movimentacoes, saldoAtual);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao buscar movimentações no Banco de Dados");
+        }
+    }
+
+    //Método para calcular o saldo atual baseado nas movimentações
+    private static double calcularSaldoAtual(List<Movimentacoes> movimentacoes) {
+        double saldo = 0.0;
+        for(Movimentacoes mov : movimentacoes) {
+            if("DEPOSITO".equalsIgnoreCase(mov.getTipoOperacao())) {
+                saldo += mov.getValor();
+            } else if ("SACAR".equalsIgnoreCase(mov.getTipoOperacao())) {
+                saldo -= mov.getValor();
+            }
+        }
+        return saldo;
     }
 
     // Método para gerar o relatório
