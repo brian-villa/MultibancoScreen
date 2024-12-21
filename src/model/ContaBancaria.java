@@ -2,7 +2,6 @@ package model;
 
 import dao.ContaBancariaDAO;
 import dao.MovimentacoesDAO;
-import view.Movimentacoes;
 
 import javax.swing.*;
 import java.sql.SQLException;

@@ -1,7 +1,7 @@
-package view;
+package model;
 
+import dao.LoginDAO;
 import dao.MovimentacoesDAO;
-import model.ContaBancaria;
 
 import javax.swing.*;
 import java.io.BufferedWriter;
@@ -14,16 +14,18 @@ public class RelatorioBancario {
 
     public static void gerarRelatorioParaConta(ContaBancaria conta) {
         MovimentacoesDAO movimentacoesDAO = new MovimentacoesDAO();
+        LoginDAO loginDAO = new LoginDAO();
 
         try {
             // Busca movimentações da conta logada
             List<Movimentacoes> movimentacoes = movimentacoesDAO.listarMovimentacoes(conta.getNumeroConta());
+            List<String> historicoLogins = loginDAO.obterHistoricoLogins(conta.getNumeroConta());
 
             // Calcula o saldo atual
             double saldoAtual = calcularSaldoAtual(movimentacoes);
 
             // Gera o relatório
-            gerarRelatorio(movimentacoes, conta);
+            gerarRelatorio(movimentacoes, conta, historicoLogins);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,7 +45,7 @@ public class RelatorioBancario {
         return saldo;
     }
 
-    private static void gerarRelatorio(List<Movimentacoes> movimentacoes, ContaBancaria conta) {
+    private static void gerarRelatorio(List<Movimentacoes> movimentacoes, ContaBancaria conta, List<String> historicoLogins) {
         String nomeArquivo = "extrato_bancario.txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
@@ -53,14 +55,34 @@ public class RelatorioBancario {
             writer.newLine();
             writer.newLine();
 
+            // Escreve as movimentações no relatório
+            writer.write("Movimentações:");
+            writer.newLine();
             for (Movimentacoes mov : movimentacoes) {
                 writer.write(mov.toString());
                 writer.newLine();
             }
 
+            writer.newLine();
             writer.write("=============================");
             writer.newLine();
             writer.write(String.format("Saldo Atual: €%.2f", conta.getSaldo()));
+            writer.newLine();
+
+            // Escreve o histórico de logins no relatório
+            writer.newLine();
+            writer.write("Histórico de Logins:");
+            writer.newLine();
+            if (historicoLogins.isEmpty()) {
+                writer.write("Nenhum login registrado.");
+            } else {
+                for (String login : historicoLogins) {
+                    writer.write(login);
+                    writer.newLine();
+                }
+            }
+
+            writer.write("=============================");
             writer.newLine();
 
             System.out.println("Relatório gerado com sucesso no arquivo: " + nomeArquivo);
@@ -70,4 +92,5 @@ public class RelatorioBancario {
             JOptionPane.showMessageDialog(null, "Erro ao salvar o relatório!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import util.ConexaoBancoDados;
-import view.Movimentacoes;
+import model.Movimentacoes;
 
 import java.sql.*;
 

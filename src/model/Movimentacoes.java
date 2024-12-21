@@ -1,6 +1,4 @@
-package view;
-
-import model.ContaBancaria;
+package model;
 
 import java.time.LocalDate;
 import java.util.UUID;

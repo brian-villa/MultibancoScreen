@@ -1,6 +1,7 @@
 package view;
 
 import dao.ContaBancariaDAO;
+import dao.LoginDAO;
 import model.ContaBancaria;
 
 import javax.swing.*;
@@ -106,13 +107,19 @@ public class Login extends JFrame implements ActionListener {
 
                 // Converte para int
                 int numeroConta = Integer.parseInt(numeroContaInput);
+
                 // Cria uma instância do DAO
                 ContaBancariaDAO dao = new ContaBancariaDAO();
+                LoginDAO loginDao = new LoginDAO();
                 conta = dao.carregarConta(numeroConta);
+
 
                 if (conta == null) {
                     JOptionPane.showMessageDialog(null, "Conta não encontrada!");
                 } else if (conta.autenticar(senhaInput)) {
+                    //registra o login ao entrar na sessão
+                    loginDao.registrarLogin(conta);
+
                     new TelaCaixaEletronico(conta);
                     dispose();
                 } else {

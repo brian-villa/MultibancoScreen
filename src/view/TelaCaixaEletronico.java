@@ -1,6 +1,7 @@
 package view;
 
 import model.ContaBancaria;
+import model.RelatorioBancario;
 
 import javax.swing.*;
 import java.awt.*;
