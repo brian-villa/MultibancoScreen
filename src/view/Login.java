@@ -1,5 +1,6 @@
 package view;
 
+import dao.ContaBancariaDAO;
 import model.ContaBancaria;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.event.*;
 public class Login extends JFrame implements ActionListener {
     ContaBancaria conta;
     JButton login, clear;
-    JTextField pinTextField;
+    JTextField pinTextField, numeroContaTextField;
 
     Login() {
         setTitle("ATM Multibanco");
@@ -33,6 +34,15 @@ public class Login extends JFrame implements ActionListener {
         text.setFont(new Font("Osward", Font.BOLD, 38));
         text.setBounds(270, 40, 400, 40);
         add(text);
+
+        // Número da Conta
+        JLabel numeroContaLabel = new JLabel("NÚMERO DA CONTA:");
+        numeroContaLabel.setBounds(200, 100, 200, 40);
+        add(numeroContaLabel);
+
+        numeroContaTextField = new JTextField();
+        numeroContaTextField.setBounds(370, 110, 200, 30);
+        add(numeroContaTextField);
 
         // PIN de validação
         JLabel pin = new JLabel("SENHA:");
@@ -72,20 +82,38 @@ public class Login extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == clear) {
+            numeroContaTextField.setText("");
             pinTextField.setText("");
         } else if(e.getSource() == login) {
             //Verificaçao de senha
             try {
+                String numeroContaInput = numeroContaTextField.getText();
                 String senhaInput = pinTextField.getText();
 
-                if (conta.autenticar(senhaInput)) {
-                    new TelaCaixaEletronico(conta); 
+                // Validação dos campos
+                if (numeroContaInput.isEmpty() || senhaInput.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!");
+                    return;
+                }
+
+                // Converte para int
+                int numeroConta = Integer.parseInt(numeroContaInput);
+                // Cria uma instância do DAO
+                ContaBancariaDAO dao = new ContaBancariaDAO();
+                conta = dao.carregarConta(numeroConta);
+
+                if (conta == null) {
+                    JOptionPane.showMessageDialog(null, "Conta não encontrada!");
+                } else if (conta.autenticar(senhaInput)) {
+                    new TelaCaixaEletronico(conta);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Senha incorreta!");
                 }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Número da conta deve ser um número válido!");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Erro :" + ex.getMessage());
             }
         }
     }

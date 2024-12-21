@@ -30,5 +30,5 @@ bin/
 .DS_Store
 
 # Ignora arquivos de configuração local
-.env
+src/.env
 local.properties

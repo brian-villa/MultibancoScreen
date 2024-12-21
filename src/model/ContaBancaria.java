@@ -17,6 +17,7 @@ public class ContaBancaria {
     private double saldo;
     private final ArrayList<Movimentacoes> movimentacoes;
     private final MovimentacoesDAO movimentacoesDAO;
+    private final ContaBancariaDAO contaBancariaDAO;
     private final String senha; // Agora você tem a senha em vez de pin
 
     // Construtor
@@ -27,6 +28,7 @@ public class ContaBancaria {
         this.senha = senha; // Armazena a senha da conta
         this.movimentacoes = new ArrayList<>();
         this.movimentacoesDAO = new MovimentacoesDAO();
+        this.contaBancariaDAO = new ContaBancariaDAO();
 
         carregarMovimentacoes();
     }
@@ -39,13 +41,33 @@ public class ContaBancaria {
     // Metodos para interagir com a conta
     public void depositar(double valor) {
         saldo += valor;
-        movimentacoes.add(new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "Depósito", valor));
+        Movimentacoes mov = new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "DEPOSITO", valor);
+        movimentacoes.add(mov);
+
+        try {
+            movimentacoesDAO.inserirMovimentacoes(mov, this.numeroConta);
+            contaBancariaDAO.atualizarSaldo(this);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao salvar a movimentação no banco!");
+        }
     }
 
     public void sacar(double valor) {
         if(saldo >= valor) {
             saldo -= valor;
-            movimentacoes.add(new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "Saque", -valor));
+
+            Movimentacoes mov = new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "SACAR", -valor);
+            movimentacoes.add(mov);
+
+            try {
+                movimentacoesDAO.inserirMovimentacoes(mov, this.numeroConta);
+                contaBancariaDAO.atualizarSaldo(this);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Erro ao salvar a movimentação no banco!");
+            }
+
         } else {
             System.out.println("Saldo insuficiente");
         }
@@ -68,7 +90,7 @@ public class ContaBancaria {
     // Método para carregar as movimentações do banco de dados
     private void carregarMovimentacoes() {
         try {
-            List<Movimentacoes> mov = movimentacoesDAO.listarMovimentacoes();
+            List<Movimentacoes> mov = movimentacoesDAO.listarMovimentacoes(this.numeroConta);
             movimentacoes.addAll(mov);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -89,7 +89,7 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
 
         } else if (e.getSource() == btnExtrato) {
             try {
-                RelatorioBancario.gerarRelatorio(conta.getMovimentacoes(), conta.getSaldo());
+                RelatorioBancario.gerarRelatorioParaConta(conta);
                 JOptionPane.showMessageDialog(this, "Relatório gerado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erro ao gerar o relatório!", "Erro", JOptionPane.ERROR_MESSAGE);

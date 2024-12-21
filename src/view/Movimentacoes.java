@@ -1,5 +1,7 @@
 package view;
 
+import model.ContaBancaria;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -8,6 +10,7 @@ public class Movimentacoes {
     private LocalDate data;
     private String tipoOperacao;
     private double valor;
+    private ContaBancaria contaBancaria;
 
     public Movimentacoes(UUID uuid, LocalDate data, String tipoOperacao, double valor) {
         this.uuid = uuid;

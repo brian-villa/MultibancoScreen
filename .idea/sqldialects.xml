@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/2d1da3e5-8fa9-49e5-879d-b48b440e313e/console.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/dao/ContaBancariaDAO.java" dialect="TSQL" />
   </component>
 </project>

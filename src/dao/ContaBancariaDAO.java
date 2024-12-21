@@ -15,12 +15,16 @@ public class ContaBancariaDAO {
             assert connection != null;
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, numeroConta);
+                System.out.println("Consultando número da conta: " + numeroConta);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     String titular = rs.getString("titular");
                     double saldo = rs.getDouble("saldo");
                     String senha = rs.getString("senha");
                     conta = new ContaBancaria(numeroConta, titular, saldo, senha); // Cria a conta a partir dos dados do banco
+                    System.out.println("Conta encontrada: " + conta.getTitular()); //
+                } else {
+                    System.out.println("Nenhuma conta encontrada para o número: " + numeroConta);
                 }
             }
         }
