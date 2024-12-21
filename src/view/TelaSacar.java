@@ -1,6 +1,6 @@
 package view;
 
-import model.ContaBancaria;
+import controller.TelaSacarController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaSacar extends JFrame implements ActionListener {
-    private ContaBancaria conta;
+    private TelaSacarController controller;
     private JButton btnSacar10, btnSacar20, btnSacar50, btnSacar100, btnOutras, btnVoltar;
 
-    public TelaSacar(ContaBancaria conta) {
-        this.conta = conta;
+    public TelaSacar(TelaSacarController controller) {
+        this.controller = controller;
 
         // Configuração da janela
         setTitle("Saque Multibanco");
@@ -71,32 +71,18 @@ public class TelaSacar extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSacar10) {
-            realizarSaque(10);
+            controller.sacar(10);
         } else if (e.getSource() == btnSacar20) {
-            realizarSaque(20);
+            controller.sacar(20);
         } else if (e.getSource() == btnSacar50) {
-            realizarSaque(50);
+            controller.sacar(50);
         } else if (e.getSource() == btnSacar100) {
-            realizarSaque(100);
+            controller.sacar(100);
         } else if (e.getSource() == btnOutras) {
-            try {
-                double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a sacar:"));
-                realizarSaque(valor);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Valor inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+            controller.sacarOutroValor();
         } else if (e.getSource() == btnVoltar) {
             dispose();
-            new TelaCaixaEletronico(conta);
-        }
-    }
-
-    private void realizarSaque(double valor) {
-        if (conta.getSaldo() >= valor) {
-            conta.sacar(valor);
-            JOptionPane.showMessageDialog(this, "Saque de € " + valor + " realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Saldo insuficiente!", "Erro", JOptionPane.ERROR_MESSAGE);
+            controller.voltar();
         }
     }
 }

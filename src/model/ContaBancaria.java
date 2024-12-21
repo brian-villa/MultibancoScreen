@@ -17,7 +17,7 @@ public class ContaBancaria {
     private final ArrayList<Movimentacoes> movimentacoes;
     private final MovimentacoesDAO movimentacoesDAO;
     private final ContaBancariaDAO contaBancariaDAO;
-    private final String senha; // Agora você tem a senha em vez de pin
+    private final String senha;
 
     // Construtor
     public ContaBancaria(int numeroConta, String titular, double saldo, String senha) {

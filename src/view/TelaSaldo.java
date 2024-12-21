@@ -1,6 +1,6 @@
 package view;
 
-import model.ContaBancaria;
+import controller.TelaSaldoController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,11 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaSaldo extends JFrame implements ActionListener {
-    private ContaBancaria conta;
+    private TelaSaldoController controller;
     private JButton btnVoltar;
+    private JLabel lblSaldoValor;
 
-    public TelaSaldo(ContaBancaria conta) {
-        this.conta = conta;
+    public TelaSaldo(TelaSaldoController controller, double saldo) {
+        this.controller = controller;
 
         // Configuração da janela
         setTitle("Saldo Multibanco");
@@ -34,7 +35,7 @@ public class TelaSaldo extends JFrame implements ActionListener {
         painelCentral.setBackground(Color.white);
 
         // Label para mostrar o saldo
-        JLabel lblSaldoValor = new JLabel("€ " + String.format("%.2f", conta.getSaldo()), JLabel.CENTER);
+        lblSaldoValor = new JLabel("€ " + String.format("%.2f", saldo), JLabel.CENTER);
         lblSaldoValor.setFont(new Font("Tahoma", Font.PLAIN, 32));
         painelCentral.add(lblSaldoValor);
 
@@ -53,8 +54,12 @@ public class TelaSaldo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnVoltar) {
-            dispose(); // Fecha a tela atual
-            new TelaCaixaEletronico(conta); // Volta para a tela principal
+            controller.voltar();
         }
+    }
+
+    // Atualiza o saldo exibido
+    public void atualizarSaldo(double saldo) {
+        lblSaldoValor.setText("€ " + String.format("%.2f", saldo));
     }
 }

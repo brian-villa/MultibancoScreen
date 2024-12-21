@@ -1,36 +1,33 @@
 package view;
 
-import dao.ContaBancariaDAO;
-import dao.LoginDAO;
-import model.ContaBancaria;
-
+import controller.LoginController;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Login extends JFrame implements ActionListener {
-    ContaBancaria conta;
-    JButton login, clear, cadastrarConta;;
-    JTextField pinTextField, numeroContaTextField;
+    private JTextField numeroContaTextField, pinTextField;
+    private JButton loginButton, clearButton, cadastrarContaButton;
+    private LoginController controller;
 
-    Login() {
+    public Login() {
         setTitle("ATM Multibanco");
-
         setLayout(null);
         setLocationRelativeTo(null);
-        setResizable(false);  // Impede redimensionamento
-        setExtendedState(JFrame.NORMAL);  // Impede a maximização
+        setResizable(false);
+        setExtendedState(JFrame.NORMAL);
 
-        //Imagem da aplicação
+        // Imagem da aplicação
         ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("icon/logo.png"));
-        Image i2 = icon.getImage().getScaledInstance(300, 200,Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
+        Image img = icon.getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT);
+        ImageIcon iconScaled = new ImageIcon(img);
 
-        JLabel label = new JLabel(i3);
+        JLabel label = new JLabel(iconScaled);
         label.setBounds(150, 10, 100, 100);
         add(label);
 
-        // texto de título
+        // Título
         JLabel text = new JLabel("Multibanco ATM");
         text.setFont(new Font("Osward", Font.BOLD, 38));
         text.setBounds(270, 40, 400, 40);
@@ -45,102 +42,81 @@ public class Login extends JFrame implements ActionListener {
         numeroContaTextField.setBounds(370, 110, 200, 30);
         add(numeroContaTextField);
 
-        // PIN de validação
-        JLabel pin = new JLabel("SENHA:");
-        pin.setBounds(200, 150, 400, 40);
-        add(pin);
+        // Senha
+        JLabel pinLabel = new JLabel("SENHA:");
+        pinLabel.setBounds(200, 150, 200, 40);
+        add(pinLabel);
 
-        //Input senha
         pinTextField = new JPasswordField();
         pinTextField.setBounds(370, 159, 200, 30);
         add(pinTextField);
 
-        //Botao de "OK"
-        login = new JButton("Confirmar");
-        login.setBounds(280, 250, 100, 30);
-        login.setBackground(Color.GREEN);
-        login.setForeground(Color.BLACK);
-        login.addActionListener(this);
-        add(login);
+        // Botões
+        loginButton = new JButton("Confirmar");
+        loginButton.setBounds(280, 250, 100, 30);
+        loginButton.setBackground(Color.GREEN);
+        loginButton.setForeground(Color.BLACK);
+        loginButton.addActionListener(this);
+        add(loginButton);
 
-        //Botao de "Limpar"
-        clear = new JButton("Limpar");
-        clear.setBounds(410, 250, 100, 30);
-        clear.setBackground(Color.YELLOW);
-        clear.setForeground(Color.BLACK);
-        clear.addActionListener(this);
-        add(clear);
+        clearButton = new JButton("Limpar");
+        clearButton.setBounds(410, 250, 100, 30);
+        clearButton.setBackground(Color.YELLOW);
+        clearButton.setForeground(Color.BLACK);
+        clearButton.addActionListener(this);
+        add(clearButton);
 
-        //Botao de "Cadastrar COnta"
-        cadastrarConta = new JButton("Cadastrar Conta");
-        cadastrarConta.setBounds(280, 290, 230, 30);
-        cadastrarConta.setBackground(Color.CYAN);
-        cadastrarConta.setForeground(Color.BLACK);
-        cadastrarConta.addActionListener(this);
-        add(cadastrarConta);
+        cadastrarContaButton = new JButton("Cadastrar Conta");
+        cadastrarContaButton.setBounds(280, 290, 230, 30);
+        cadastrarContaButton.setBackground(Color.CYAN);
+        cadastrarContaButton.setForeground(Color.BLACK);
+        cadastrarContaButton.addActionListener(this);
+        add(cadastrarContaButton);
 
-
+        // Definir fundo
         getContentPane().setBackground(Color.white);
-
 
         setSize(800, 480);
         setVisible(true);
         setLocation(350, 200);
     }
 
+    public void setController(LoginController controller) {
+        this.controller = controller;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == clear) {
+        if (e.getSource() == clearButton) {
             numeroContaTextField.setText("");
             pinTextField.setText("");
-        } else if(e.getSource() == login) {
-            //Verificaçao de senha
-            try {
-                String numeroContaInput = numeroContaTextField.getText();
-                String senhaInput = pinTextField.getText();
+        } else if (e.getSource() == loginButton) {
+            String numeroContaInput = numeroContaTextField.getText();
+            String senhaInput = pinTextField.getText();
 
-                // Validação dos campos
-                if (numeroContaInput.isEmpty() || senhaInput.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!");
-                    return;
-                }
-
-                // Converte para int
-                int numeroConta = Integer.parseInt(numeroContaInput);
-
-                // Cria uma instância do DAO
-                ContaBancariaDAO dao = new ContaBancariaDAO();
-                LoginDAO loginDao = new LoginDAO();
-                conta = dao.carregarConta(numeroConta);
-
-
-                if (conta == null) {
-                    JOptionPane.showMessageDialog(null, "Conta não encontrada!");
-                } else if (conta.autenticar(senhaInput)) {
-                    //registra o login ao entrar na sessão
-                    loginDao.registrarLogin(conta);
-
-                    new TelaCaixaEletronico(conta);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Senha incorreta!");
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Número da conta deve ser um número válido!");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Erro :" + ex.getMessage());
+            if (numeroContaInput.isEmpty() || senhaInput.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!");
+                return;
             }
-        } else if (e.getSource() == cadastrarConta) {
-            //abrir a tela de cadastro de conta
+
+            try {
+                controller.autenticarConta(numeroContaInput, senhaInput);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+            }
+        } else if (e.getSource() == cadastrarContaButton) {
             new TelaCadastroConta();
             dispose();
         }
     }
 
     public static void main(String[] args) {
-        new Login();
+        // Criar a instância do controlador
+        LoginController controller = new LoginController();
 
+        // Criar a interface de login e configurar o controlador
+        Login loginView = new Login();
+        loginView.setController(controller);
+        controller.setView(loginView);
     }
-
-
 }

@@ -1,5 +1,9 @@
 package view;
 
+import controller.TelaDepositarController;
+import controller.TelaSacarController;
+import controller.TelaSaldoController;
+import controller.TelaTransferenciaController;
 import model.ContaBancaria;
 import model.RelatorioBancario;
 
@@ -83,19 +87,19 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
 
         } else if (e.getSource() == btnSaldo) {
             dispose();
-            new TelaSaldo(conta).setVisible(true);
+            new TelaSaldoController(conta);
 
         } else if (e.getSource() == btnDepositar) {
             dispose();
-            new TelaDepositar(conta).setVisible(true);
+            new TelaDepositarController(conta);
 
         } else if (e.getSource() == btnSacar) {
             dispose();
-            new TelaSacar(conta).setVisible(true);
+            new TelaSacarController(conta);
 
         } else if (e.getSource() == btnTransferir) {
             dispose();
-            new TelaTransferencia(conta).setVisible(true);
+            new TelaTransferenciaController(conta);
 
         } else if (e.getSource() == btnExtrato) {
             try {
