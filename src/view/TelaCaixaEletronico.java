@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class TelaCaixaEletronico extends JFrame implements ActionListener {
     ContaBancaria conta;
-    JButton btnDepositar, btnSacar, btnSaldo, btnSair, btnExtrato;
+    JButton btnDepositar, btnSacar, btnSaldo, btnSair, btnTransferir, btnExtrato;
 
     public TelaCaixaEletronico(ContaBancaria conta) {
         this.conta = conta;
@@ -49,6 +49,11 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         btnSaldo.addActionListener(this);
         painelCentral.add(btnSaldo);
 
+        btnTransferir = new JButton("Transferir");
+        btnTransferir.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Define o tamanho da fonte do botão
+        btnTransferir.addActionListener(this);
+        painelCentral.add(btnTransferir);
+
         btnExtrato = new JButton("Gerar Extrato");
         btnExtrato.setFont(new Font("Tahoma", Font.PLAIN, 18)); // Define o tamanho da fonte do botão
         btnExtrato.addActionListener(this);
@@ -86,6 +91,10 @@ public class TelaCaixaEletronico extends JFrame implements ActionListener {
         } else if (e.getSource() == btnSacar) {
             dispose();
             new TelaSacar(conta).setVisible(true);
+
+        } else if (e.getSource() == btnTransferir) {
+            dispose();
+            new TelaTransferencia(conta).setVisible(true);
 
         } else if (e.getSource() == btnExtrato) {
             try {

@@ -9,7 +9,7 @@ import java.awt.event.*;
 
 public class Login extends JFrame implements ActionListener {
     ContaBancaria conta;
-    JButton login, clear;
+    JButton login, clear, cadastrarConta;;
     JTextField pinTextField, numeroContaTextField;
 
     Login() {
@@ -70,6 +70,14 @@ public class Login extends JFrame implements ActionListener {
         clear.addActionListener(this);
         add(clear);
 
+        //Botao de "Cadastrar COnta"
+        cadastrarConta = new JButton("Cadastrar Conta");
+        cadastrarConta.setBounds(280, 290, 230, 30);
+        cadastrarConta.setBackground(Color.CYAN);
+        cadastrarConta.setForeground(Color.BLACK);
+        cadastrarConta.addActionListener(this);
+        add(cadastrarConta);
+
 
         getContentPane().setBackground(Color.white);
 
@@ -115,6 +123,10 @@ public class Login extends JFrame implements ActionListener {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Erro :" + ex.getMessage());
             }
+        } else if (e.getSource() == cadastrarConta) {
+            //abrir a tela de cadastro de conta
+            new TelaCadastroConta();
+            dispose();
         }
     }
 

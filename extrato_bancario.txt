@@ -1,12 +1,7 @@
 RELATÓRIO DE EXTRATO BANCÁRIO
 =============================
 
-2024-12-20|DEPOSITO|50,00
-2024-12-20|DEPOSITO|100,00
-2024-12-20|DEPOSITO|20,00
-2024-12-20|DEPOSITO|10,00
-2024-12-20|SACAR|-100,00
-2024-12-20|SACAR|-50,00
-2024-12-20|SACAR|-1000,00
+2024-12-21|SACAR|-2000,00
+2024-12-21|Transferência_Enviada para: João da Silva|-20000,00
 =============================
-Saldo Atual: €30,00
+Saldo Atual: €39240,00

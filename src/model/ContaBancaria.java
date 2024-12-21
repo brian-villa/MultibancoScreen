@@ -33,12 +33,25 @@ public class ContaBancaria {
         carregarMovimentacoes();
     }
 
+    //getters
+
+    public ArrayList<Movimentacoes> getMovimentacoes() { return movimentacoes; }
+
+    public double getSaldo() { return saldo; }
+
+    public String getTitular() { return titular; }
+
+    public int getNumeroConta() { return numeroConta; }
+
+    public String getSenha() { return senha; }
+
     // Método para autenticar a conta com a senha
     public boolean autenticar(String senhaInput) {
         return this.senha.equals(senhaInput);
     }
 
     // Metodos para interagir com a conta
+
     public void depositar(double valor) {
         saldo += valor;
         Movimentacoes mov = new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "DEPOSITO", valor);
@@ -73,19 +86,43 @@ public class ContaBancaria {
         }
     }
 
-    public ArrayList<Movimentacoes> getMovimentacoes() {
-        return movimentacoes;
+    public void transferir(double valor, int numeroContaDestino) throws SQLException {
+        ContaBancariaDAO contaDestinoDAO = new ContaBancariaDAO();
+        ContaBancaria contaDestino = contaDestinoDAO.carregarConta(numeroContaDestino);
+
+        if (this.numeroConta == numeroContaDestino) {
+            System.out.println("Não é possível transferir para a mesma conta.");
+            JOptionPane.showMessageDialog(null, "Não é possível transferir para a mesma conta.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(saldo >= valor) {
+            saldo -= valor;
+
+            Movimentacoes mov = new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "Transferência_Enviada" + " para: " + contaDestino.getTitular(), -valor);
+            movimentacoes.add(mov);
+
+            try {
+                contaDestino.saldo += valor;
+
+                movimentacoesDAO.inserirMovimentacoes(mov, this.numeroConta);
+
+                //atualiza o BD
+                contaBancariaDAO.atualizarSaldo(this);
+                contaBancariaDAO.atualizarSaldo(contaDestino);
+
+                Movimentacoes movRecebida = new Movimentacoes(UUID.randomUUID(), LocalDate.now(), "Transferência_Recebida" + " de " + this.getTitular(), valor);
+                movimentacoesDAO.inserirMovimentacoes(movRecebida, numeroContaDestino);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Erro ao realizar a transferência");
+            }
+        } else {
+            System.out.println("Saldo insuficiente para a transferência");
+        }
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public String getTitular() {
-        return titular;
-    }
-
-    public int getNumeroConta() { return numeroConta; }
 
     // Método para carregar as movimentações do banco de dados
     private void carregarMovimentacoes() {
@@ -96,18 +133,5 @@ public class ContaBancaria {
             e.printStackTrace();
             System.out.println("Erro ao carregar movimentações do banco de dados");
         }
-    }
-
-    // Método principal para criar a interface
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("model.ContaBancaria");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Criando a conta
-        ContaBancaria conta = new ContaBancaria(12345, "João da Silva", 1000, "1234");
-
-        // Adicionando os componentes ao frame
-        frame.pack();
-        frame.setVisible(true);
     }
 }

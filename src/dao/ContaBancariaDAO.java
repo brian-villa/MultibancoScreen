@@ -39,7 +39,8 @@ public class ContaBancariaDAO {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, conta.getNumeroConta());
                 stmt.setString(2, conta.getTitular());
-                stmt.setDouble(3, conta.getSaldo());
+                stmt.setDouble(3, 0.0);
+                stmt.setString(4, conta.getSenha());
                 stmt.executeUpdate();
             }
         }

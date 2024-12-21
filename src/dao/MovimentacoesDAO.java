@@ -1,9 +1,8 @@
 package dao;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import util.ConexaoBancoDados;
 import view.Movimentacoes;
@@ -40,6 +39,7 @@ public class MovimentacoesDAO {
                 Movimentacoes movimentacao = new Movimentacoes(uuid, data, tipoOperacao, valor);
                 movimentacoes.add(movimentacao);
             }
+            movimentacoes.sort(Comparator.comparing(Movimentacoes::getData));
         }
         return movimentacoes;
     }
